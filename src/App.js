@@ -4,34 +4,37 @@ import Login from "./pages/Login";
 import Employees from "./pages/Employees";
 import Payroll from "./pages/Payroll";
 import { ProtectedRoute } from "./pages/ProtectedRoute";
+import { AuthProvider } from "./context/auth-context";
 
 function App() {
   return (
-    <main>
-      <Routes>
-        <Route index element={<Login />} />
-        <Route path="login" element={<Login />} />
+    <AuthProvider>
+      <main>
+        <Routes>
+          <Route index element={<Login />} />
+          <Route path="login" element={<Login />} />
 
-        <Route path="employees" element={<MainNav />}>
-          <Route
-            index
-            element={
-              <ProtectedRoute>
-                <Employees />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="payroll"
-            element={
-              <ProtectedRoute>
-                <Payroll />
-              </ProtectedRoute>
-            }
-          />
-        </Route>
-      </Routes>
-    </main>
+          <Route path="employees" element={<MainNav />}>
+            <Route
+              index
+              element={
+                <ProtectedRoute>
+                  <Employees />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="payroll"
+              element={
+                <ProtectedRoute>
+                  <Payroll />
+                </ProtectedRoute>
+              }
+            />
+          </Route>
+        </Routes>
+      </main>
+    </AuthProvider>
   );
 }
 
