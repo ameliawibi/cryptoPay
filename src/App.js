@@ -2,6 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import MainNav from "./pages/MainNav";
 import Login from "./pages/Login";
 import Employees from "./pages/Employees";
+import Employee from "./pages/Employee";
 import Payroll from "./pages/Payroll";
 import { ProtectedRoute } from "./pages/ProtectedRoute";
 import { AuthProvider } from "./context/auth-context";
@@ -22,7 +23,8 @@ function App() {
                   <Employees />
                 </ProtectedRoute>
               }
-            />
+            ></Route>
+            <Route path=":employeeId" element={<Employee />} />
             <Route
               path="payroll"
               element={
