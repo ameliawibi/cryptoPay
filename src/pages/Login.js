@@ -1,4 +1,5 @@
 import { useNavigate, useLocation } from "react-router-dom";
+import { useForm } from "react-hook-form";
 //import { useAuth } from "../hooks/useAuth";
 
 export default function Login() {
@@ -8,7 +9,18 @@ export default function Login() {
   const location = useLocation();
   const origin = location.state?.from?.pathname || "/employees";
 
-  const onSubmit = () => {
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+  } = useForm();
+
+  const onError = (err, e) => {
+    console.log(err, e);
+  };
+
+  const onSubmit = (data) => {
+    console.log(data);
     //signIn(email,password);
     navigate(origin);
   };
@@ -16,7 +28,29 @@ export default function Login() {
   return (
     <>
       <h1>Login page</h1>
-      <button onClick={onSubmit}>Login</button>
+      <form onSubmit={handleSubmit(onSubmit, onError)}>
+        <label>Email</label>
+        <input
+          name="email"
+          placeholder="Your email"
+          {...register("email", {
+            required: true,
+          })}
+        />
+        {errors.email && <p>This field is required</p>}
+        <label>Password</label>
+        <input
+          type="password"
+          name="password"
+          placeholder="Your password"
+          {...register("password", {
+            required: true,
+          })}
+        />
+        {errors.password && <p>This field is required</p>}
+        <br />
+        <button type="submit">Login</button>
+      </form>
     </>
   );
 }
