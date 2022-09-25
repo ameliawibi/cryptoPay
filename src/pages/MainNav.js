@@ -10,6 +10,7 @@ export default function MainNav() {
         }}
       >
         <Link to="/employees">Employees</Link>
+        <Link to="timesheet">Timesheet</Link>
         <Link to="payroll">Payroll</Link>
       </nav>
       <Outlet />

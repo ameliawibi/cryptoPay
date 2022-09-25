@@ -4,6 +4,7 @@ import Login from "./pages/Login";
 import Employees from "./pages/Employees";
 import Employee from "./pages/Employee";
 import Payroll from "./pages/Payroll";
+import Timesheet from "./pages/Timesheet";
 import { ProtectedRoute } from "./pages/ProtectedRoute";
 import { AuthProvider } from "./context/auth-context";
 
@@ -23,13 +24,28 @@ function App() {
                   <Employees />
                 </ProtectedRoute>
               }
-            ></Route>
-            <Route path=":employeeId" element={<Employee />} />
+            />
+            <Route
+              path=":employeeId"
+              element={
+                <ProtectedRoute>
+                  <Employee />
+                </ProtectedRoute>
+              }
+            />
             <Route
               path="payroll"
               element={
                 <ProtectedRoute>
                   <Payroll />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="timesheet"
+              element={
+                <ProtectedRoute>
+                  <Timesheet />
                 </ProtectedRoute>
               }
             />
