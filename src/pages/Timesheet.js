@@ -1,6 +1,7 @@
 import { DateTime } from "luxon";
 import { useForm, useWatch } from "react-hook-form";
 import { Navigate } from "react-big-calendar";
+import TimesheetDetails from "./TimesheetDetails";
 
 const dateFormat = "dd/MM/yyyy";
 const TimesheetDateRange = {
@@ -12,6 +13,25 @@ const actionsMap = {
   [Navigate.PREVIOUS]: -1,
   [Navigate.NEXT]: 1,
 };
+
+const createDurationLabel = ({ start_date, end_date }) =>
+  `${DateTime.fromFormat(start_date, dateFormat).toFormat(
+    "dd MMM y"
+  )} - ${DateTime.fromFormat(end_date, dateFormat).toFormat("dd MMM y")}`;
+
+function NavigationButtons({ dateRange, onNavigatePrev, onNavigateNext }) {
+  return (
+    <main>
+      <button type="button" onClick={onNavigatePrev}>
+        Prev
+      </button>
+      <button type="button" onClick={onNavigateNext}>
+        Next
+      </button>
+      <p>{dateRange && createDurationLabel(dateRange)}</p>
+    </main>
+  );
+}
 
 export default function Timesheet() {
   const { control, setValue } = useForm({
@@ -29,7 +49,6 @@ export default function Timesheet() {
   });
 
   const navigate = (dateRange, timeFrame, setValue, action) => {
-    console.log(dateRange);
     if (!dateRange) return;
     const duration = TimesheetDateRange[timeFrame];
     const initialDate = DateTime.fromFormat(dateRange.start_date, dateFormat);
@@ -41,8 +60,6 @@ export default function Timesheet() {
       ? today
       : initialDate.plus({ [`${duration}s`]: actionsMap[action] });
 
-    console.log(actionsMap[action]);
-
     const startDate = newDate.startOf(duration);
     const endDate = newDate.endOf(duration);
 
@@ -50,28 +67,7 @@ export default function Timesheet() {
       start_date: startDate.toFormat(dateFormat),
       end_date: endDate.toFormat(dateFormat),
     });
-
-    console.log(dateRange);
   };
-
-  const createDurationLabel = ({ start_date, end_date }) =>
-    `${DateTime.fromFormat(start_date, dateFormat).toFormat(
-      "dd MMM y"
-    )} - ${DateTime.fromFormat(end_date, dateFormat).toFormat("dd MMM y")}`;
-
-  function NavigationButtons({ dateRange, onNavigatePrev, onNavigateNext }) {
-    return (
-      <main>
-        <button type="button" onClick={onNavigatePrev}>
-          Prev
-        </button>
-        <button type="button" onClick={onNavigateNext}>
-          Next
-        </button>
-        <p>{dateRange && createDurationLabel(dateRange)}</p>
-      </main>
-    );
-  }
 
   function onNavigatePrev() {
     return navigate(dateRange, "monthly", setValue, Navigate.PREVIOUS);
@@ -92,6 +88,7 @@ export default function Timesheet() {
         onNavigatePrev={() => onNavigatePrev()}
         onNavigateNext={() => onNavigateNext()}
       />
+      <TimesheetDetails dateRange={dateRange} />
     </main>
   );
 }
