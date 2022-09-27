@@ -1,6 +1,7 @@
 import { useNavigate, useLocation } from "react-router-dom";
 import { useForm } from "react-hook-form";
 //import { useAuth } from "../hooks/useAuth";
+import { Button } from "@chakra-ui/react";
 
 export default function Login() {
   //const {user, signIn} = useAuth();
@@ -28,6 +29,7 @@ export default function Login() {
   return (
     <>
       <h1>Login page</h1>
+
       <form onSubmit={handleSubmit(onSubmit, onError)}>
         <label>Email</label>
         <input
@@ -49,7 +51,9 @@ export default function Login() {
         />
         {errors.password && <p>This field is required</p>}
         <br />
-        <button type="submit">Login</button>
+        <Button type="submit" colorScheme="blue">
+          Login
+        </Button>
       </form>
     </>
   );
