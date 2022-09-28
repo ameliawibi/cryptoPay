@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router-dom";
-import MainNav from "./pages/MainNav";
+import MainNav from "./components/templates/MainNav";
 import Login from "./pages/Login";
 import Employees from "./pages/Employees";
 import Employee from "./pages/Employee";
