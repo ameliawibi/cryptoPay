@@ -8,10 +8,28 @@ export default function MainNav() {
 
   return (
     <>
-      <Flex w={"100%"} bg={"blue.800"} h={"45px"} boxShadow="md">
-        <Tab setPage={setPage} name="Employee" page={page} link="/employees" />
-        <Tab setPage={setPage} name="Timesheet" page={page} link="timesheet" />
-        <Tab setPage={setPage} name="Payroll" page={page} link="payroll" />
+      <Flex
+        w={"100%"}
+        bg={"blue.800"}
+        h={"100%"}
+        boxShadow="md"
+        alignContent={"center"}
+      >
+        <Flex ml={7} h={"100%"}>
+          <Tab
+            setPage={setPage}
+            name="Employee"
+            page={page}
+            link="/employees"
+          />
+          <Tab
+            setPage={setPage}
+            name="Timesheet"
+            page={page}
+            link="timesheet"
+          />
+          <Tab setPage={setPage} name="Payroll" page={page} link="payroll" />
+        </Flex>
       </Flex>
       <Outlet />
     </>

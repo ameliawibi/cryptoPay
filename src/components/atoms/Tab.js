@@ -8,7 +8,7 @@ export default function Tab({ link, page, setPage, name }) {
 
   return (
     <Box
-      p={2}
+      p={3}
       _hover={{ background: "orange.400" }}
       onClick={change}
       bg={page === name ? "orange.400" : "blue.800"}
