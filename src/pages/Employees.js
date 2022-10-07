@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Link, Outlet } from "react-router-dom";
 import { userData } from "../components/userData";
+import PageHeader from "../components/atoms/PageHeader";
 import {
   Box,
-  Heading,
   Table,
   Thead,
   Tbody,
@@ -40,9 +40,7 @@ export default function Employees() {
   return (
     <Box ml={20} mt={5}>
       <main style={{ padding: "1rem 0" }}>
-        <Heading as="h2" size="xl" color={"blue.800"} mb={6}>
-          Employees
-        </Heading>
+        <PageHeader text={"Employees"} />
 
         <InputGroup mb={5} w={"25%"} size="sm">
           <InputLeftElement

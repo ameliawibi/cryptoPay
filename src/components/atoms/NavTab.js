@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { Box } from "@chakra-ui/react";
 
-export default function Tab({ link, page, setPage, name }) {
+export default function NavTab({ link, page, setPage, name }) {
   const change = () => {
     setPage(name);
   };
