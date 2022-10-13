@@ -10,7 +10,7 @@ export default function MainNav() {
     <>
       <Flex
         w={"100%"}
-        bg={"blue.800"}
+        bg={"blue.700"}
         h={"100%"}
         boxShadow="md"
         alignContent={"center"}

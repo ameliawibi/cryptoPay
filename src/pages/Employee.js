@@ -15,17 +15,24 @@ export default function Employee() {
   const user = userData.find((user) => user.id === Number(params.employeeId));
 
   return (
-    <main style={{ padding: "1rem 0" }} mt={5} ml={20}>
-      <Box mt={5} ml={20}>
-        <PageHeader text={"Employee"} />
+    <Box
+      minH={"95vh"}
+      h={"100%"}
+      w={"100%"}
+      bgGradient="linear(to-l, purple.800, blue.700)"
+      overflow={"hidden"}
+    >
+      <main style={{ padding: "1rem 0" }}>
         <Box
           boxShadow="md"
           p="6"
+          w={"90%"}
+          margin={"auto"}
+          mt={"10"}
           rounded="md"
           bg="white"
-          w={"95%"}
-          mb={8}
-          h={"75vh"}
+          minH={"75vh"}
+          h={"100%"}
         >
           <Flex gap={8}>
             <Box alignContent={"center"} minWidth={"200px"}>
@@ -60,7 +67,7 @@ export default function Employee() {
             </Box>
           </Flex>
         </Box>
-      </Box>
-    </main>
+      </main>
+    </Box>
   );
 }

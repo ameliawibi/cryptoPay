@@ -4,13 +4,7 @@ import { userData } from "../components/userData";
 import PageHeader from "../components/atoms/PageHeader";
 import {
   Box,
-  Table,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
-  Td,
-  TableContainer,
+  Avatar,
   Input,
   InputGroup,
   InputLeftElement,
@@ -38,65 +32,56 @@ export default function Employees() {
   };
 
   return (
-    <Box ml={20} mt={5}>
+    <Box
+      minH={"95vh"}
+      h={"100%"}
+      w={"100%"}
+      bgGradient="linear(to-l, purple.800, blue.700)"
+      overflow={"hidden"}
+    >
       <main style={{ padding: "1rem 0" }}>
-        <PageHeader text={"Employees"} />
+        <Box
+          bg={"white"}
+          p={7}
+          w={"90%"}
+          margin={"auto"}
+          mt={"10"}
+          boxShadow="md"
+          rounded="md"
+          h={"100%"}
+          minH={"85vh"}
+        >
+          <PageHeader text={"Employees"} />
+          <InputGroup mb={5} w={"25%"} size="sm">
+            <InputLeftElement
+              pointerEvents="none"
+              children={<SearchIcon color="gray.300" />}
+            />
+            <Input
+              type="text"
+              placeholder="Search"
+              focusBorderColor="blue.800"
+              color={"gray"}
+              value={searchEmployee}
+              onChange={changeInput}
+            />
+          </InputGroup>
 
-        <InputGroup mb={5} w={"25%"} size="sm">
-          <InputLeftElement
-            pointerEvents="none"
-            children={<SearchIcon color="gray.300" />}
-          />
-          <Input
-            type="text"
-            placeholder="Search"
-            focusBorderColor="blue.800"
-            color={"gray"}
-            value={searchEmployee}
-            onChange={changeInput}
-          />
-        </InputGroup>
+          {employeeData.map((user) => (
+            <Box>
+              <Link to={`/employees/${user.id}`} key={user.id}>
+                <Box boxShadow="md" rounded="md">
+                  <Avatar name={user.name} size="lg" mb={6} p={3} />
+                  {user.id}
+                  {user.name}
+                  {user.designation}
+                </Box>
+              </Link>
+            </Box>
+          ))}
 
-        <TableContainer w={"92%"}>
-          <Table variant="simple">
-            <Thead>
-              <Tr>
-                <Th>Id</Th>
-                <Th>Name</Th>
-                <Th>Email</Th>
-                <Th>Designation</Th>
-              </Tr>
-            </Thead>
-            <Tbody>
-              {employeeData.map((user) => (
-                <Tr _hover={{ background: "orange.100" }}>
-                  <Td textTransform={"capitalize"}>
-                    <Link to={`/employees/${user.id}`} key={user.id}>
-                      {user.id}
-                    </Link>
-                  </Td>
-                  <Td textTransform={"capitalize"}>
-                    <Link to={`/employees/${user.id}`} key={user.id}>
-                      {user.name}
-                    </Link>
-                  </Td>
-                  <Td>
-                    <Link to={`/employees/${user.id}`} key={user.id}>
-                      {user.email}
-                    </Link>
-                  </Td>
-                  <Td>
-                    <Link to={`/employees/${user.id}`} key={user.id}>
-                      {user.designation}
-                    </Link>
-                  </Td>
-                </Tr>
-              ))}
-            </Tbody>
-          </Table>
-        </TableContainer>
-
-        <Outlet />
+          <Outlet />
+        </Box>
       </main>
     </Box>
   );

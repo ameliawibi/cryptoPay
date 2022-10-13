@@ -9,12 +9,13 @@ export default function NavTab({ link, page, setPage, name }) {
   return (
     <Box
       p={3}
-      _hover={{ background: "orange.400" }}
+      _hover={{ background: "purple.600" }}
       onClick={change}
-      bg={page === name ? "orange.400" : "blue.800"}
+      bg={page === name ? "purple.600" : "blue.700"}
       w={"100px"}
       textAlign={"center"}
       color={"white"}
+      fontSize="sm"
     >
       <Link to={link}>{name}</Link>
     </Box>

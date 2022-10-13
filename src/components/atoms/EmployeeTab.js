@@ -10,15 +10,15 @@ export default function EmployeeTab({ text, setTab, tab }) {
       as="button"
       p={1}
       _hover={{
-        bg: "orange.100",
+        bg: "blue.100",
         fontWeight: "bold",
-        color: "orange",
+        color: "blue.700",
       }}
       textAlign={"start"}
       onClick={handleClick}
-      bg={tab === text ? "orange.100" : "white"}
+      bg={tab === text ? "blue.100" : "white"}
       fontWeight={tab === text && "bold"}
-      color={tab === text && "orange"}
+      color={tab === text && "blue.700"}
     >
       {text}
     </Box>

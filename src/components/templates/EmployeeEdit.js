@@ -12,8 +12,6 @@ import {
 
 export default function EmployeeEdit({ userId }) {
   const user = userData.find((user) => user.id === Number(userId));
-  console.log(user);
-  console.log(user.email);
 
   const {
     register,

@@ -1,7 +1,11 @@
 import { DateTime } from "luxon";
 import { useForm, useWatch } from "react-hook-form";
 import { Navigate } from "react-big-calendar";
-import TimesheetDetails from "./TimesheetDetails";
+import { background, Box, Flex } from "@chakra-ui/react";
+import PageHeader from "../components/atoms/PageHeader";
+import TimesheetDetails from "../components/templates/TimesheetDetails";
+import createDurationLabel from "../components/atoms/TimeDuration";
+import { NavigationButton } from "../components/atoms/NavigationButton";
 
 const dateFormat = "dd/MM/yyyy";
 const TimesheetDateRange = {
@@ -14,31 +18,16 @@ const actionsMap = {
   [Navigate.NEXT]: 1,
 };
 
-const createDurationLabel = ({ start_date, end_date }) =>
-  `${DateTime.fromFormat(start_date, dateFormat).toFormat(
-    "dd MMM y"
-  )} - ${DateTime.fromFormat(end_date, dateFormat).toFormat("dd MMM y")}`;
-
-function NavigationButtons({ dateRange, onNavigatePrev, onNavigateNext }) {
-  return (
-    <main>
-      <button type="button" onClick={onNavigatePrev}>
-        Prev
-      </button>
-      <button type="button" onClick={onNavigateNext}>
-        Next
-      </button>
-      <p>{dateRange && createDurationLabel(dateRange)}</p>
-    </main>
-  );
-}
-
 export default function Timesheet() {
   const { control, setValue } = useForm({
     defaultValues: {
       dateRange: {
-        start_date: DateTime.now().startOf("month").toFormat(dateFormat),
-        end_date: DateTime.now().endOf("month").toFormat(dateFormat),
+        start_date: DateTime.now()
+          .startOf("month")
+          .toFormat(dateFormat),
+        end_date: DateTime.now()
+          .endOf("month")
+          .toFormat(dateFormat),
       },
     },
   });
@@ -78,17 +67,42 @@ export default function Timesheet() {
   }
 
   return (
-    <main style={{ padding: "1rem 0" }}>
-      <p>
-        Timesheet for {dateRange.start_date} to {dateRange.end_date}
-      </p>
-      <input hidden type="text" control={control} name="dateRange" />
-      <NavigationButtons
-        dateRange={dateRange}
-        onNavigatePrev={() => onNavigatePrev()}
-        onNavigateNext={() => onNavigateNext()}
-      />
-      <TimesheetDetails dateRange={dateRange} />
-    </main>
+    <Box
+      mh={"95vh"}
+      h={"100%"}
+      w={"100%"}
+      bgGradient="linear(to-l, purple.800, blue.700)"
+      overflow={"hidden"}
+    >
+      <main style={{ padding: "1rem 0" }}>
+        <Box
+          bg={"white"}
+          p={7}
+          w={"90%"}
+          margin={"auto"}
+          mt={"10"}
+          boxShadow="md"
+          rounded="md"
+          h={"87vh"}
+          minH={"100%"}
+        >
+          <PageHeader text={"Timesheet"} />
+          <Flex alignContent={"stretch"}>
+            <NavigationButton onClick={onNavigatePrev} direction="left" />
+            <Box
+              color={"blue.800"}
+              w={"380px"}
+              my={"auto"}
+              textAlign={"center"}
+            >
+              {dateRange && createDurationLabel(dateRange)}
+            </Box>
+            <NavigationButton onClick={onNavigateNext} direction="right" />
+          </Flex>
+          <input hidden type="text" control={control} name="dateRange" />
+          <TimesheetDetails dateRange={dateRange} />
+        </Box>
+      </main>
+    </Box>
   );
 }
