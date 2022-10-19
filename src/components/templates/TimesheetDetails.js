@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
-import { userTimesheet } from "../userData";
 import {
   Input,
   Table,
@@ -13,6 +12,8 @@ import {
   Button,
   Box,
 } from "@chakra-ui/react";
+import axios from "axios";
+import { url } from "../../utils/url";
 
 export default function TimesheetDetails({ dateRange }) {
   const [defaultValues, setDefaultValues] = useState(null);
@@ -27,11 +28,44 @@ export default function TimesheetDetails({ dateRange }) {
     name: "timesheet_items",
   });
 
+  let dateRangeStr = JSON.stringify(dateRange);
+
+  const initialize = async () => {
+    try {
+      let response = await axios.get(
+        `${url}/timesheet?dateRange=${dateRangeStr}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (response) {
+        let timesheet_items = response.data.users
+          .map((Item) => ({
+            ...Item,
+            ...Item.UserTimesheets[0],
+          }))
+          .map((Item) => {
+            Item.id = Item.UserTimesheets[0]?.id;
+            delete Item.Timesheet;
+            delete Item.UserTimesheets;
+            return Item;
+          });
+
+        setDefaultValues({ timesheet_items });
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   useEffect(() => {
-    //later change to use dateRange
-    setDefaultValues({ timesheet_items: userTimesheet.timesheet_items });
+    initialize();
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [dateRange]);
 
   useEffect(() => {
     reset(defaultValues);
@@ -40,13 +74,20 @@ export default function TimesheetDetails({ dateRange }) {
 
   const onSubmit = async (data) => {
     //later add the month and year using dateRange to the request body so that back end know which timesheet period should be saved
-    console.log(data);
+    try {
+      let response = await axios.post(`${url}/update-timesheet/`, data);
+      if (response.status === 200) {
+        initialize();
+      }
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
     <>
-      <Box p="6">
-        <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <Box p="6">
           <TableContainer
             w={"100%"}
             shadow={"md"}
@@ -54,6 +95,7 @@ export default function TimesheetDetails({ dateRange }) {
             rounded="md"
             backgroundColor={"gray.100"}
           >
+
             <Table size="sm">
               <Thead>
                 <Tr>
@@ -71,33 +113,34 @@ export default function TimesheetDetails({ dateRange }) {
                     <Tr key={item.id}>
                       <Td>{index + 1}</Td>
                       <Td textTransform={"capitalize"}>{item.name}</Td>
-                      <Td>Designation</Td>
+                      <Td textTransform={"capitalize"}>{item.designation}</Td>
                       <Td>
                         <Input
                           type="number"
                           size="sm"
                           maxW={"150px"}
                           backgroundColor={"gray.200"}
-                          name={`timesheet_items[${index}].hoursWorked`}
+                          name={`timesheet_items[${index}].workingHours`}
+
                           {...register(
-                            `timesheet_items[${index}].hoursWorked`,
+                            `timesheet_items[${index}].workingHours`,
                             {
                               required: true,
                             }
                           )}
-                          defaultValue={item.hoursWorked}
+                          defaultValue={item.workingHours}
                         />
                       </Td>
-                      <Td>30.48</Td>
-                      <Td>30.48</Td>
+                      <Td>{item.totalPay}</Td>
+                      <Td>{item.tokensPaid}</Td>
                     </Tr>
                   ))}
               </Tbody>
             </Table>
           </TableContainer>
-        </form>
-      </Box>
-      <Button type="submit">Submit</Button>
+        </Box>
+        <Button type="submit">Submit</Button>
+      </form>
     </>
   );
 }

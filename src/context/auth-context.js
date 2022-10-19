@@ -1,5 +1,7 @@
 import { createContext, useEffect, useReducer } from "react";
 import PropTypes from "prop-types";
+import axios from "axios";
+import { url } from "../utils/url";
 
 // single source of truth,
 const ActionType = {
@@ -11,7 +13,6 @@ const ActionType = {
 
 const initialState = {
   isAuthenticated: false,
-  isInitialized: false,
   user: {
     name: "",
   },
@@ -24,7 +25,6 @@ const handlers = {
     return {
       ...state,
       isAuthenticated,
-      isInitialized: true,
       user,
     };
   },
@@ -35,17 +35,16 @@ const handlers = {
     return {
       ...state,
       isAuthenticated,
-      isInitialized: true,
       user,
     };
   },
 
   SIGNIN: (state, action) => {
-    const { user } = action.payload;
+    const { isAuthenticated, user } = action.payload;
 
     return {
       ...state,
-      isAuthenticated: true,
+      isAuthenticated,
       user,
     };
   },
@@ -77,106 +76,87 @@ export const AuthProvider = (props) => {
 
   useEffect(() => {
     const initialize = async () => {
-      try {
-        //let { success, data } = await authApi.reAuth();
-        //hard code values first
-        let success = true;
-        let data = { name: "Bernice" };
-
-        if (success) {
-          // this object that we pass into dispatch will be the action
-          // the action is used in the reducer in line 64
-          // depending on the action, then we will access the payload in the handler functions above (line 22)
-          dispatch({
-            type: ActionType.INITIALIZE,
-            payload: {
-              isAuthenticated: true,
-              user: data,
-            },
-          });
-        } else {
-          dispatch({
-            type: ActionType.INITIALIZE,
-            payload: {
-              isAuthenticated: false,
-              user: null,
-            },
-          });
-        }
-      } catch (err) {
-        console.log(err);
-        if (err.code === 30018) {
-          await logout();
-          window.location.push("/").catch(console.error);
-        }
-
-        console.error(err);
-        dispatch({
-          type: ActionType.INITIALIZE,
-          payload: {
-            isAuthenticated: false,
-            user: null,
-          },
-        });
-      }
+      //console.log("initialize ran");
+      await reAuth();
     };
 
     initialize();
   }, []);
 
   const signIn = async (email, password) => {
-    //const user = await authApi.signIn({ email, password });
-    //hard code values first
-    const user = { data: { name: "Bernice" } };
+    let response = await axios.post(`${url}/auth/login`, { email, password });
 
-    dispatch({
-      type: ActionType.INITIALIZE,
-      payload: {
-        user: user.data,
-        isAuthenticated: true,
-      },
-    });
+    const token = response.data.token;
+    localStorage.setItem("token", "Bearer " + token);
+    localStorage.setItem("userId", response.data.user.id);
+    axios.defaults.headers.common["Authorization"] = "Bearer " + token;
+
+    if (response.status === 200) {
+      dispatch({
+        type: ActionType.SIGNIN,
+        payload: {
+          user: response.data.user,
+          isAuthenticated: true,
+        },
+      });
+    }
   };
 
   const reAuth = async () => {
+    //console.log("reAuth ran");
     try {
-      //const { success, data } = await authApi.reAuth();
-      //hard code values first
-      let success = true;
-      const data = { name: "Bernice" };
+      let data = {
+        auth: `${window.localStorage.getItem(
+          "token"
+        )} ${window.localStorage.getItem("userId")}`,
+      };
 
-      if (success) {
+      /*
+      {
+        headers: {
+          Authorization: `${localStorage.getItem(
+            "token"
+          )} ${localStorage.getItem("userId")}`,
+        },
+      }
+      */
+      let response = await axios.post(`${url}/auth/reauth`, data);
+
+      if (response.data.message === "Authorized!") {
+        //console.log(response.data.message);
         dispatch({
           type: ActionType.INITIALIZE,
           payload: {
+            user: response.data.user,
             isAuthenticated: true,
-            user: data,
           },
         });
       } else {
         dispatch({
           type: ActionType.INITIALIZE,
           payload: {
+            user: {},
             isAuthenticated: false,
-            user: null,
           },
         });
       }
-    } catch (err) {
-      console.error(err);
-      dispatch({
-        type: ActionType.INITIALIZE,
-        payload: {
-          isAuthenticated: false,
-          user: null,
-        },
-      });
+    } catch (e) {
+      console.log(e);
+
+      await logout();
     }
   };
 
   const logout = async () => {
     //to replace with api call later
     //await authApi.logout();
+    const response = await axios.get(`${url}/auth/logout`);
+    if (response.status === 200) {
+      window.localStorage.removeItem("token");
+      window.localStorage.removeItem("userId");
+      //window.location.reload();
+    }
+
     dispatch({
       type: ActionType.LOGOUT,
     });
