@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { connect } from "../redux/blockchain/blockchainActions";
 import { fetchData } from "../redux/data/dataActions";
@@ -6,7 +6,6 @@ import PageHeader from "../components/atoms/PageHeader";
 import { Box, Avatar, Text, HStack, Button } from "@chakra-ui/react";
 import axios from "axios";
 import { url } from "../utils/url";
-import crypto from "../crypto.png";
 
 export default function Payroll() {
   ///// ######## BLOCKCHAIN ######## /////////
@@ -21,7 +20,12 @@ export default function Payroll() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [blockchain.smartContract, dispatch]);
 
+  console.log(blockchain.smartContract);
+  console.log(data);
+
   const bulkTransfer = (addressArr, amountsArr) => {
+    console.log(addressArr);
+    console.log(amountsArr);
     blockchain.smartContract.methods
       .multiTransfer(addressArr, amountsArr)
       .send({
@@ -86,22 +90,6 @@ export default function Payroll() {
   }, []);
   ///// ######## SQL ######## /////////
 
-  const bulkTransferClick = (e) => {
-    e.preventDefault();
-    bulkTransfer(
-      [
-        "0xC28beACBa01F3Ca4a67E40068a61891027C8F540",
-        "0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1",
-      ],
-      [(2 * 10 ** 18).toString(), "2"]
-    );
-  };
-
-  const connectToWalletClick = (e) => {
-    e.preventDefault();
-    dispatch(connect());
-  };
-
   return (
     <Box
       minH={"95vh"}
@@ -125,7 +113,7 @@ export default function Payroll() {
           <PageHeader text={"Payroll"} />
           {payrollData &&
             payrollData.map((item) => (
-              <Box>
+              <Box key={item.id}>
                 <Box
                   boxShadow="md"
                   rounded="md"
