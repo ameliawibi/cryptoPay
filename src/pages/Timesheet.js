@@ -1,11 +1,10 @@
 import { DateTime } from "luxon";
 import { useForm, useWatch } from "react-hook-form";
 import { Navigate } from "react-big-calendar";
-import { background, Box, Flex } from "@chakra-ui/react";
 import PageHeader from "../components/atoms/PageHeader";
 import TimesheetDetails from "../components/templates/TimesheetDetails";
-import createDurationLabel from "../components/atoms/TimeDuration";
-import { NavigationButton } from "../components/atoms/NavigationButton";
+import Background from "../components/atoms/Background";
+import DateToggleTimesheet from "../components/molecules/DateToggleTimesheet";
 
 const dateFormat = "dd/MM/yyyy";
 const TimesheetDateRange = {
@@ -67,42 +66,17 @@ export default function Timesheet() {
   }
 
   return (
-    <Box
-      mh={"95vh"}
-      h={"100%"}
-      w={"100%"}
-      bgGradient="linear(to-l, purple.800, blue.700)"
-      overflow={"hidden"}
-    >
-      <main style={{ padding: "1rem 0" }}>
-        <Box
-          bg={"white"}
-          p={7}
-          w={"90%"}
-          margin={"auto"}
-          mt={"10"}
-          boxShadow="md"
-          rounded="md"
-          h={"87vh"}
-          minH={"100%"}
-        >
-          <PageHeader text={"Timesheet"} />
-          <Flex alignContent={"stretch"}>
-            <NavigationButton onClick={onNavigatePrev} direction="left" />
-            <Box
-              color={"blue.800"}
-              w={"380px"}
-              my={"auto"}
-              textAlign={"center"}
-            >
-              {dateRange && createDurationLabel(dateRange)}
-            </Box>
-            <NavigationButton onClick={onNavigateNext} direction="right" />
-          </Flex>
-          <input hidden type="text" control={control} name="dateRange" />
-          <TimesheetDetails dateRange={dateRange} />
-        </Box>
-      </main>
-    </Box>
+    <Background>
+      <PageHeader text={"Timesheet"} />
+      <DateToggleTimesheet
+        onNavigateNext={onNavigateNext}
+        onNavigatePrev={onNavigatePrev}
+        control={control}
+        dateRange={dateRange}
+      />
+
+      <input hidden type="text" control={control} name="dateRange" />
+      <TimesheetDetails dateRange={dateRange} />
+    </Background>
   );
 }

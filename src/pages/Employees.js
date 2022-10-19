@@ -111,9 +111,7 @@ export default function Employees() {
                 </Box>
               ))}
 
-          <Outlet />
-        </Box>
-      </main>
-    </Box>
+      <Outlet />
+    </Background>
   );
 }

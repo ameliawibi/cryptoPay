@@ -88,7 +88,14 @@ export default function TimesheetDetails({ dateRange }) {
     <>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Box p="6">
-          <TableContainer w={"90%"}>
+          <TableContainer
+            w={"100%"}
+            shadow={"md"}
+            p="6"
+            rounded="md"
+            backgroundColor={"gray.100"}
+          >
+
             <Table size="sm">
               <Thead>
                 <Tr>
@@ -112,7 +119,9 @@ export default function TimesheetDetails({ dateRange }) {
                           type="number"
                           size="sm"
                           maxW={"150px"}
+                          backgroundColor={"gray.200"}
                           name={`timesheet_items[${index}].workingHours`}
+
                           {...register(
                             `timesheet_items[${index}].workingHours`,
                             {
