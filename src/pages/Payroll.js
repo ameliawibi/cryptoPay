@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { connect } from "../redux/blockchain/blockchainActions";
 import { fetchData } from "../redux/data/dataActions";
+import Background from "../components/atoms/Background";
 
 export default function Payroll() {
   const dispatch = useDispatch();
@@ -43,7 +44,7 @@ export default function Payroll() {
   };
 
   return (
-    <main style={{ padding: "1rem 0" }}>
+    <Background>
       {blockchain.account === "" || blockchain.smartContract === null ? (
         <button
           onClick={(e) => {
@@ -72,6 +73,6 @@ export default function Payroll() {
       >
         Bulk transfer
       </button>
-    </main>
+    </Background>
   );
 }
