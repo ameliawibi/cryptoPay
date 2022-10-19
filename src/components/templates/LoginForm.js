@@ -1,5 +1,6 @@
 import { useNavigate, useLocation } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { useAuth } from "../../hooks/useAuth";
 
 import {
   FormErrorMessage,
@@ -12,7 +13,7 @@ import {
 } from "@chakra-ui/react";
 
 export default function LoginForm() {
-  //const {user, signIn} = useAuth();
+  const { signIn } = useAuth();
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -24,9 +25,10 @@ export default function LoginForm() {
     handleSubmit,
   } = useForm();
 
-  const onSubmit = (data) => {
-    console.log(data);
-    //signIn(email,password);
+  const onSubmit = async (data) => {
+    let { email, password } = data;
+    await signIn(email, password);
+
     navigate(origin);
   };
 

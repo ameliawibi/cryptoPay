@@ -1,21 +1,25 @@
 import { Navigate, useLocation } from "react-router-dom";
-import { useState } from "react";
-//import { useAuth } from "../hooks/useAuth";
-//import getCookie from "../utils/getCookie";
+import { useState, useEffect } from "react";
+import { useAuth } from "../hooks/useAuth";
 
 export function ProtectedRoute({ children }) {
-  //to be used later
-  /*const { isAuthenticated, reAuth } = useAuth();
-  useEffect(() => {
-    reAuth();
-  }, [getCookie("x-access-token")]);
-  */
-
-  const [isAuthenticated, setIsAuthenticated] = useState(true);
-
+  const { isAuthenticated, reAuth } = useAuth();
+  console.log("isAuthenticated: ", isAuthenticated);
   const location = useLocation();
 
-  if (!isAuthenticated) {
+  useEffect(() => {
+    const reAuthAgain = async () => {
+      console.log("reAuth again");
+      await reAuth();
+      console.log("isAuthenticated useEffect: ", isAuthenticated);
+    };
+    reAuthAgain();
+    console.log("isAuthenticated useEffect: ", isAuthenticated);
+  }, [isAuthenticated]);
+
+  const token = localStorage.getItem("token");
+
+  if (!token) {
     return <Navigate to="/login" replace state={{ from: location }} />;
   }
 
