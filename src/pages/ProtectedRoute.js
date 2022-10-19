@@ -7,7 +7,7 @@ export function ProtectedRoute({ children }) {
   console.log("isAuthenticated: ", isAuthenticated);
   const location = useLocation();
 
-  useEffect(() => {
+  /*useEffect(() => {
     const reAuthAgain = async () => {
       console.log("reAuth again");
       await reAuth();
@@ -16,6 +16,7 @@ export function ProtectedRoute({ children }) {
     reAuthAgain();
     console.log("isAuthenticated useEffect: ", isAuthenticated);
   }, [isAuthenticated]);
+  */
 
   const token = localStorage.getItem("token");
 

@@ -76,7 +76,7 @@ export const AuthProvider = (props) => {
 
   useEffect(() => {
     const initialize = async () => {
-      console.log("initialize ran");
+      //console.log("initialize ran");
       await reAuth();
     };
 
@@ -103,7 +103,7 @@ export const AuthProvider = (props) => {
   };
 
   const reAuth = async () => {
-    console.log("reAuth ran");
+    //console.log("reAuth ran");
     try {
       let data = {
         auth: `${window.localStorage.getItem(
@@ -123,7 +123,7 @@ export const AuthProvider = (props) => {
       let response = await axios.post(`${url}/auth/reauth`, data);
 
       if (response.data.message === "Authorized!") {
-        console.log(response.data.message);
+        //console.log(response.data.message);
         dispatch({
           type: ActionType.INITIALIZE,
           payload: {
