@@ -86,10 +86,11 @@ module.exports = {
       provider: () =>
         new HDWalletProvider(
           MNEMONIC,
-          `https://goerli.infura.io/v3/${PROJECT_ID}`
+          `wss://goerli.infura.io/ws/v3/${PROJECT_ID}`
         ),
       network_id: 5, // Goerli's id
       confirmations: 2, // # of confirmations to wait between deployments. (default: 0)
+      networkCheckTimeout: 10000, //because of slow internet
       timeoutBlocks: 200, // # of blocks before a deployment times out  (minimum/default: 50)
       skipDryRun: true, // Skip dry run before migrations? (default: false for public nets )
     },
