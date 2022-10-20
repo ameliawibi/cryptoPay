@@ -9,9 +9,9 @@ export default function NavTab({ link, page, setPage, name }) {
   return (
     <Box
       p={3}
-      _hover={{ background: "purple.600" }}
+      _hover={{ background: "#034eff" }}
       onClick={change}
-      bg={page === name ? "purple.600" : "blue.700"}
+      bg={page === name ? "#034eff" : "#001a37"}
       w={"100px"}
       textAlign={"center"}
       color={"white"}

@@ -1,21 +1,39 @@
-import { Box, Avatar, Flex, HStack } from "@chakra-ui/react";
+import { Box, Avatar, HStack } from "@chakra-ui/react";
 
 export default function PageHeader({ user }) {
   return (
-    <Flex
-      bg={"gray.100"}
+    <Box
       boxShadow="md"
       rounded="md"
+      display="flex"
+      alignItems="center"
+      alignContent="center"
       p={6}
-      mb={6}
-      alignItems={"center"}
+      bg={"white"}
+      _hover={{ bg: "blue.100" }}
+      mb={5}
     >
-      <Avatar name={user.name} size="lg" />
-      <HStack ml={5} spacing={"24px"}>
-        <Box w={"10px"}>{user.id}</Box>
-        <Box w={"130px"}>{user.name}</Box>
-        <Box w={"80px"}>{user.designation}</Box>
+      <HStack spacing={5}>
+        <Avatar
+          name={user.name}
+          size="lg"
+          p={3}
+          bg={"gray.100"}
+          color={"#034eff"}
+        />
+        <Box fontSize="sm" w={"10px"}>
+          {user.id}
+        </Box>
+        <Box fontSize="sm" w={"100px"}>
+          {user.name}
+        </Box>
+        <Box fontSize="sm" w={"150px"}>
+          {user.designation}
+        </Box>
+        <Box fontSize="sm" w={"150px"}>
+          {user.email}
+        </Box>
       </HStack>
-    </Flex>
+    </Box>
   );
 }

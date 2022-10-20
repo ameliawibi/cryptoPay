@@ -14,7 +14,7 @@ const theme = extendTheme({
   fonts: {
     heading: `'Raleway', sans-serif`,
     body: `'Raleway', sans-serif`,
-    color: "blue.700",
+    color: "#022255",
   },
 });
 

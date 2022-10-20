@@ -95,7 +95,6 @@ export default function TimesheetDetails({ dateRange }) {
             rounded="md"
             backgroundColor={"gray.100"}
           >
-
             <Table size="sm">
               <Thead>
                 <Tr>
@@ -121,7 +120,6 @@ export default function TimesheetDetails({ dateRange }) {
                           maxW={"150px"}
                           backgroundColor={"gray.200"}
                           name={`timesheet_items[${index}].workingHours`}
-
                           {...register(
                             `timesheet_items[${index}].workingHours`,
                             {

@@ -1,7 +1,7 @@
 import { DateTime } from "luxon";
 import { useForm, useWatch } from "react-hook-form";
 import { Navigate } from "react-big-calendar";
-import PageHeader from "../components/atoms/PageHeader";
+
 import TimesheetDetails from "../components/templates/TimesheetDetails";
 import Background from "../components/atoms/Background";
 import DateToggleTimesheet from "../components/molecules/DateToggleTimesheet";
@@ -66,8 +66,7 @@ export default function Timesheet() {
   }
 
   return (
-    <Background>
-      <PageHeader text={"Timesheet"} />
+    <Background title={"Timesheet"}>
       <DateToggleTimesheet
         onNavigateNext={onNavigateNext}
         onNavigatePrev={onNavigatePrev}

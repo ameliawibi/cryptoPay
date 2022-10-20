@@ -7,7 +7,7 @@ export function NavigationButton({ onClick, direction }) {
       <IconButton
         type="button"
         variant="unstyled"
-        _hover={{ color: "orange", fontWeight: "bold" }}
+        _hover={{ color: "blue.700", fontWeight: "bold" }}
         onClick={onClick}
         fontSize="20px"
         icon={direction === "left" ? <ChevronLeftIcon /> : <ChevronRightIcon />}

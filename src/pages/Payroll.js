@@ -6,6 +6,9 @@ import PageHeader from "../components/atoms/PageHeader";
 import { Box, Avatar, Text, HStack, Button } from "@chakra-ui/react";
 import axios from "axios";
 import { url } from "../utils/url";
+import pageBackground from "../pageBg.jpg";
+import PayrollData from "../components/templates/PayrollTable";
+import Footer from "../components/atoms/Footer";
 
 export default function Payroll() {
   ///// ######## BLOCKCHAIN ######## /////////
@@ -114,48 +117,21 @@ export default function Payroll() {
       minH={"95vh"}
       h={"100%"}
       w={"100%"}
-      bgGradient="linear(to-l, purple.800, blue.700)"
+      // bg={"gray.100"}
+      bgImage={pageBackground}
+      bgSize={"cover"}
       overflow={"hidden"}
     >
       <main style={{ padding: "1rem 0" }}>
-        <Box
-          bg={"white"}
-          p={7}
-          w={"90%"}
-          margin={"auto"}
-          mt={"10"}
-          boxShadow="md"
-          rounded="md"
-          h={"100%"}
-          minH={"85vh"}
-        >
+        <Box w={"90%"} margin={"auto"} mt={"10"}>
           <PageHeader text={"Payroll"} />
-          {payrollData &&
-            payrollData.map((item) => (
-              <Box key={item.id}>
-                <Box
-                  boxShadow="md"
-                  rounded="md"
-                  display="flex"
-                  alignItems="center"
-                  alignContent="center"
-                  p={6}
-                >
-                  <HStack spacing={10}>
-                    <Avatar name={item.name} size="lg" p={3} />
-                    <Text fontSize="sm"> {item.name}</Text>
-                    <Text fontSize="sm">Month: {Number(item.month) + 1}</Text>
-                    <Text fontSize="sm">Year: {item.year}</Text>
-                    <Text fontSize="sm">Total Pay: {item.totalPay}</Text>
-                    <Text fontSize="sm">Tokens Paid: {item.tokensPaid}</Text>
-                    <Text fontSize="sm">To be Paid: {item.toBePaid}</Text>
-                  </HStack>
-                </Box>
-              </Box>
-            ))}
           {blockchain.account === "" || blockchain.smartContract === null ? (
             <Button
-              mt={10}
+              variant="outline"
+              color={"white"}
+              size={"sm"}
+              fontWeight={"light"}
+              _hover={{ bg: "gray.100", color: "#001a37" }}
               onClick={(e) => {
                 e.preventDefault();
                 dispatch(connect());
@@ -166,8 +142,7 @@ export default function Payroll() {
           ) : (
             <main>
               <Button
-                mt={10}
-                mr={8}
+                variant="outline"
                 onClick={(e) => {
                   e.preventDefault();
                   bulkTransfer(transferWallet, transferAmount);
@@ -179,6 +154,9 @@ export default function Payroll() {
             </main>
           )}
         </Box>
+
+        <PayrollData data={payrollData} />
+        <Footer />
       </main>
     </Box>
   );

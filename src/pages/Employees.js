@@ -1,18 +1,13 @@
 import { useEffect, useState } from "react";
 import { Link, Outlet } from "react-router-dom";
 import PageHeader from "../components/atoms/PageHeader";
-import {
-  Box,
-  Avatar,
-  Input,
-  InputGroup,
-  InputLeftElement,
-  Text,
-  HStack,
-} from "@chakra-ui/react";
+import { Box, Input, InputGroup, InputLeftElement } from "@chakra-ui/react";
 import { SearchIcon } from "@chakra-ui/icons";
 import axios from "axios";
+import pageBackground from "../pageBg.jpg";
 import { url } from "../utils/url";
+import EmployeeBox from "../components/atoms/EmployeeBox";
+import Footer from "../components/atoms/Footer";
 
 export default function Employees() {
   const [employeeData, setEmployeeData] = useState(null);
@@ -42,25 +37,25 @@ export default function Employees() {
 
   return (
     <Box
-      minH={"95vh"}
+      minH={"94.3vh"}
       h={"100%"}
       w={"100%"}
-      bgGradient="linear(to-l, purple.800, blue.700)"
+      bgImage={pageBackground}
+      bgSize={"cover"}
       overflow={"hidden"}
     >
       <main style={{ padding: "1rem 0" }}>
+        <Box w={"90%"} margin={"auto"} mt={"10"}>
+          <PageHeader text={"Employees"} />
+        </Box>
         <Box
-          bg={"white"}
-          p={7}
           w={"90%"}
           margin={"auto"}
-          mt={"10"}
-          boxShadow="md"
+          mt={"5"}
           rounded="md"
+          minH={"75vh"}
           h={"100%"}
-          minH={"85vh"}
         >
-          <PageHeader text={"Employees"} />
           <InputGroup mb={5} w={"25%"} size="sm">
             <InputLeftElement
               pointerEvents="none"
@@ -91,28 +86,13 @@ export default function Employees() {
               .map((user) => (
                 <Box key={user.id}>
                   <Link to={`/employees/${user.id}`} key={user.id}>
-                    <Box
-                      boxShadow="md"
-                      rounded="md"
-                      display="flex"
-                      alignItems="center"
-                      alignContent="center"
-                      p={6}
-                    >
-                      <HStack spacing={10}>
-                        <Avatar name={user.name} size="lg" p={3} />
-                        <Text fontSize="sm">{user.id}</Text>
-                        <Text fontSize="sm">{user.name}</Text>
-                        <Text fontSize="sm">{user.designation}</Text>
-                        <Text fontSize="sm">{user.email}</Text>
-                      </HStack>
-                    </Box>
+                    <EmployeeBox user={user} />
                   </Link>
                 </Box>
               ))}
-
           <Outlet />
         </Box>
+        <Footer />
       </main>
     </Box>
   );
