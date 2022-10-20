@@ -9,6 +9,7 @@ import { url } from "../utils/url";
 
 export default function Payroll() {
   ///// ######## BLOCKCHAIN ######## /////////
+  const [defaultValues, setDefaultValues] = useState(null);
   const dispatch = useDispatch();
   const blockchain = useSelector((state) => state.blockchain);
   const data = useSelector((state) => state.data);
@@ -43,6 +44,15 @@ export default function Payroll() {
         console.log(receipt);
         console.log("Success!");
         dispatch(fetchData(blockchain.account));
+        axios
+          .post(`${url}/update-payroll`, { timesheet_items: defaultValues })
+          .then((res) => {
+            console.log(res);
+            initialize();
+          })
+          .catch((e) => {
+            console.log(e);
+          });
       });
   };
   ///// ######## BLOCKCHAIN ######## /////////
@@ -57,6 +67,7 @@ export default function Payroll() {
       const response = await axios.get(`${url}/payroll/`);
 
       if (response) {
+        setDefaultValues(response.data.timesheet_items);
         let timesheet_items = response.data.timesheet_items
           .map((Item) => ({
             ...Item,
@@ -64,19 +75,27 @@ export default function Payroll() {
             ...Item.Timesheet,
           }))
           .map((Item) => {
+            Item["toBePaid"] = Item["totalPay"] - Item["tokensPaid"];
             delete Item.User;
             delete Item.Timesheet;
             return Item;
           });
         console.log(timesheet_items);
         setPayrollData(timesheet_items);
-
-        /*for (const [key, value] of Object.entries(timesheet_items[0])) {
-          if (key === "walletAddress") {
-            console.log(`${key}: ${value}`);
+        let walletAddresses = [];
+        let toBePaidArray = [];
+        for (let i = 0; timesheet_items.length > i; i++) {
+          for (const [key, value] of Object.entries(timesheet_items[i])) {
+            if (key === "walletAddress") {
+              walletAddresses.push(value);
+            }
+            if (key === "toBePaid") {
+              toBePaidArray.push((value * 10 ** 18).toString());
+            }
           }
         }
-        */
+        setTransferWallet(walletAddresses);
+        setTransferAmount(toBePaidArray);
       }
     } catch (err) {
       console.log(err);
@@ -129,9 +148,7 @@ export default function Payroll() {
                     <Text fontSize="sm">Year: {item.year}</Text>
                     <Text fontSize="sm">Total Pay: {item.totalPay}</Text>
                     <Text fontSize="sm">Tokens Paid: {item.tokensPaid}</Text>
-                    <Text fontSize="sm">
-                      To be Paid: {item.totalPay - item.tokensPaid}
-                    </Text>
+                    <Text fontSize="sm">To be Paid: {item.toBePaid}</Text>
                   </HStack>
                 </Box>
               </Box>
@@ -153,13 +170,7 @@ export default function Payroll() {
                 mr={8}
                 onClick={(e) => {
                   e.preventDefault();
-                  bulkTransfer(
-                    [
-                      "0xC28beACBa01F3Ca4a67E40068a61891027C8F540",
-                      "0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1",
-                    ],
-                    [(2 * 10 ** 18).toString(), "2"]
-                  );
+                  bulkTransfer(transferWallet, transferAmount);
                 }}
               >
                 Bulk transfer

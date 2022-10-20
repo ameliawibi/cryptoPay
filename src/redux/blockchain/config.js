@@ -1,4 +1,5 @@
 // to replace with new contract address
-export const contractAddress = "0xBCBBbB79D6abC1Fb2f5403F793cA5BD90578774d";
+//goerli
+export const contractAddress = "0x4aFA2EE539533EF97Ff12194C3A412759fDa32Ee";
 
-export const activeNetworkId = 3;
+export const activeNetworkId = 5;
