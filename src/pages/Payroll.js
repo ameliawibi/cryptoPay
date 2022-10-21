@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { connect } from "../redux/blockchain/blockchainActions";
 import { fetchData } from "../redux/data/dataActions";
 import PageHeader from "../components/atoms/PageHeader";
-import { Box, Text, HStack, Button } from "@chakra-ui/react";
+import { Box, Avatar, Text, HStack, Button } from "@chakra-ui/react";
 import axios from "axios";
 import { url } from "../utils/url";
 import pageBackground from "../pageBg.jpg";
@@ -141,24 +141,16 @@ export default function Payroll() {
             </Button>
           ) : (
             <main>
-              <HStack spacing={3}>
-                <Button
-                  variant="outline"
-                  color={"white"}
-                  size={"sm"}
-                  fontWeight={"light"}
-                  _hover={{ bg: "gray.100", color: "#001a37" }}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    bulkTransfer(transferWallet, transferAmount);
-                  }}
-                >
-                  Bulk transfer
-                </Button>
-                <Text as={"h6"} color={"white"}>
-                  Wallet Connected
-                </Text>
-              </HStack>
+              <Button
+                variant="outline"
+                onClick={(e) => {
+                  e.preventDefault();
+                  bulkTransfer(transferWallet, transferAmount);
+                }}
+              >
+                Bulk transfer
+              </Button>
+              <Text>Wallet Connected</Text>
             </main>
           )}
         </Box>
