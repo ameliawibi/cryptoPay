@@ -7,7 +7,6 @@ import {
   Td,
   TableContainer,
 } from "@chakra-ui/react";
-import toMonthName from "../../utils/numberToMonth";
 
 export default function PayrollTable({ data }) {
   return (
@@ -50,7 +49,7 @@ export default function PayrollTable({ data }) {
                 <Td textTransform={"capitalize"} textAlign={"center"}>
                   {item.name}
                 </Td>
-                <Td textAlign={"center"}>{toMonthName(item.month)}</Td>
+                <Td textAlign={"center"}>{item.month}</Td>
                 <Td textAlign={"center"}>{item.year}</Td>
                 <Td textAlign={"center"}>{item.totalPay}</Td>
                 <Td textAlign={"center"}>{item.tokensPaid}</Td>
